@@ -72,7 +72,7 @@ const Game = () => {
   //para traer del servidor las puntuaciones de cada letra
   const getAlphabetScores = () => {
     axios
-      .get("http://localhost:8000/api/getalphabetscores")
+      .get("https://stringify-app.herokuapp.com/api/getalphabetscores")
       .then((response) => {
         //console.log(response.data);
         setAlphabetScores(response.data);
@@ -85,7 +85,7 @@ const Game = () => {
   //para traer del servidor los requisitos
   const getRequirements = () => {
     axios
-      .get("http://localhost:8000/api/getrequirements")
+      .get("https://stringify-app.herokuapp.com/api/getrequirements")
       .then((response) => {
         //console.log(response.data);
         //ponemos ya el primer requisito aleatorio
@@ -185,7 +185,7 @@ const Game = () => {
         setStopTimer(true);
 
         axios
-          .post("http://localhost:8000/api/scoreword", {
+          .post("https://stringify-app.herokuapp.com/api/scoreword", {
             word: currentWord,
             requirementId: currentRequirement.id,
             time: secondsLeft,
@@ -249,7 +249,7 @@ const Game = () => {
     console.log("LLEGA A END GAME");
     console.log("userscore es: " + appContext.userScore)
     axios
-      .post("http://localhost:8000/api/saveuser", {
+      .post("https://stringify-app.herokuapp.com/api/saveuser", {
         nombre: appContext.username,
         score: appContext.userScore,
       })
