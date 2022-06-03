@@ -33,7 +33,7 @@ const GameHeading = ({ disableScore }) => {
               icon={faRankingStar}
             />
           </IconButton>
-          <Heading userSelect={"none"} mt="5">
+          <Heading userSelect={"none"} mt="5" onClick={() => navigate("/")} cursor="pointer">
             Stringify
           </Heading>
           <IconButton onClick={onOpen}>
