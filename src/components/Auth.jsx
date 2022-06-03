@@ -39,7 +39,7 @@ const Auth = () => {
     if (username && username.trim().length > 0) {
       //Primero comprobamos si existe el usuario
       axios
-        .post("https://stringify-app.herokuapp.com/api/userexists", { nombre: username })
+        .post("http://localhost:8000/api/userexists", { nombre: username })
         .then((response) => {
           if (response.data == true) {
             setErrorMsg("¡Ya existe un usuario con ese nombre!");
@@ -47,7 +47,7 @@ const Auth = () => {
           } else {
             //si no existe procedemos al "preguardado"
             axios
-              .post("https://stringify-app.herokuapp.com/api/saveuser", { nombre: username })
+              .post("http://localhost:8000/api/saveuser", { nombre: username })
               .then((response) => {
                 console.log("Preguardado usuario...");
                 console.log(response.data);
