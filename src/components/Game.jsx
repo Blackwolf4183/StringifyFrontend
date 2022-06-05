@@ -102,8 +102,8 @@ const Game = () => {
     //si es la primera vez que cargamos la aplicacion
     if (initialLoad) {
       let rand = Math.floor(Math.random() * initialLoad.length);
-      console.log("rand is: " + rand);
-      console.log(initialLoad[rand]);
+      //console.log("rand is: " + rand);
+      //console.log(initialLoad[rand]);
       setCurrentRequirement(initialLoad[rand]);
 
       for (let i = 0; i < initialLoad.length; i++) {
@@ -191,18 +191,18 @@ const Game = () => {
             time: secondsLeft,
           })
           .then((response) => {
-            console.log(currentRequirement);
+            //console.log(currentRequirement);
             //palabra no valida
             if (response.data == -1) {
               setCurrentWord(null);
               inputRef.current.value = "";
-              console.log("La palabra no es valida");
+              //console.log("La palabra no es valida");
               setInputError("La palabra escrita no existe");
               setStopTimer(false);
             } else if (response.data == -2) {
               setCurrentWord(null);
               inputRef.current.value = "";
-              console.log("La condición no se cumple");
+              //console.log("La condición no se cumple");
               setWordList((oldArray) => [
                 ...oldArray,
                 { word: currentWord, score: 0, correct: false },
@@ -217,13 +217,13 @@ const Game = () => {
               ]);
               //llamamos a updateUserScore con lo que nos de el servidor
               updateUserScore(response.data);
-              console.log("PUNTUACION: " + appContext.userScore);
+              //console.log("PUNTUACION: " + appContext.userScore);
 
               restartCycle(false);
             }
           })
           .catch((err) => {
-            console.log("ha habido un error");
+            //console.log("ha habido un error");
             setStopTimer(false);
           })
           .finally(() => {
@@ -241,21 +241,21 @@ const Game = () => {
 
     setTimeout(() => {
       console.log("")
-    }, 1000);
+    }, 2000);
 
     //mandamos puntuación final al servidor junto al username
     setStopTimer(true);
 
-    console.log("LLEGA A END GAME");
-    console.log("userscore es: " + appContext.userScore)
+    //console.log("LLEGA A END GAME");
+    //console.log("userscore es: " + appContext.userScore)
     axios
       .post("https://stringify-app.herokuapp.com/api/saveuser", {
         nombre: appContext.username,
         score: appContext.userScore,
       })
       .then((response) => {
-        console.log("Se ha guardado la puntuacion del usuario: ");
-        console.log(response.data);
+        //console.log("Se ha guardado la puntuacion del usuario: ");
+        //console.log(response.data);
       })
       .finally(() => {
         setHasEndedGame(true);
