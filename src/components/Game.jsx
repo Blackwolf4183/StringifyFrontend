@@ -30,6 +30,9 @@ const Game = () => {
   //puntuacion del usuario
   const [hasEndedGame, setHasEndedGame] = useState(false);
 
+  const [userScore, setUserScore] = useState(0);
+  const [finishedWords, setFinishedWords] = useState(false);
+
   const [alphabetScores, setAlphabetScores] = useState(null);
   const [requirements, setRequirements] = useState(null);
   const [currentRequirement, setCurrentRequirement] = useState({
@@ -56,8 +59,9 @@ const Game = () => {
     inputRef.current.value = "";
 
     if (requirements.length === 0) {
-      console.log("Has terminado el juego");
-      endGame();
+      //console.log("Has terminado el juego");
+      setFinishedWords(true);
+      //endGame();
     }
     setStopTimer(false); //desbloqueamos timer
     if (!timeout) {
@@ -102,8 +106,8 @@ const Game = () => {
     //si es la primera vez que cargamos la aplicacion
     if (initialLoad) {
       let rand = Math.floor(Math.random() * initialLoad.length);
-      //console.log("rand is: " + rand);
-      //console.log(initialLoad[rand]);
+      console.log("rand is: " + rand);
+      console.log(initialLoad[rand]);
       setCurrentRequirement(initialLoad[rand]);
 
       for (let i = 0; i < initialLoad.length; i++) {
@@ -217,13 +221,13 @@ const Game = () => {
               ]);
               //llamamos a updateUserScore con lo que nos de el servidor
               updateUserScore(response.data);
-              //console.log("PUNTUACION: " + appContext.userScore);
+              //console.log("PUNTUACION: " + userScore);
 
               restartCycle(false);
             }
           })
           .catch((err) => {
-            //console.log("ha habido un error");
+            //console.log("Ha habido un error");
             setStopTimer(false);
           })
           .finally(() => {
@@ -234,24 +238,30 @@ const Game = () => {
   };
 
   const updateUserScore = (increment) => {
+    setUserScore(userScore + increment);
     appContext.updateUserScore(increment);
   };
 
+  //solución a usestate asíncrono con las puntuaciones
+  useEffect(() => {
+    if(finishedWords){
+      endGame();
+    }
+  }, [userScore,finishedWords])
+  
+
   const endGame = () => {
-
-    setTimeout(() => {
-      console.log("")
-    }, 2000);
-
     //mandamos puntuación final al servidor junto al username
     setStopTimer(true);
 
+    //console.log("esto se ejecuta ahora");
+
     //console.log("LLEGA A END GAME");
-    //console.log("userscore es: " + appContext.userScore)
+    //console.log("userscore es: " + userScore);
     axios
       .post("https://stringify-app.herokuapp.com/api/saveuser", {
         nombre: appContext.username,
-        score: appContext.userScore,
+        score: userScore,
       })
       .then((response) => {
         //console.log("Se ha guardado la puntuacion del usuario: ");
@@ -261,8 +271,6 @@ const Game = () => {
         setHasEndedGame(true);
       });
 
-    //reseteamos parámetros del usuario
-    
   };
 
   const handleUpdateWord = (e) => {
@@ -389,7 +397,6 @@ const Game = () => {
           <Heading>Puntuacion: {appContext.userScore}</Heading>
         </VStack>
       </Grid>
-      
     </VStack>
   );
 };
